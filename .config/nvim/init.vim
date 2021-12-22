@@ -1,5 +1,4 @@
 call plug#begin('~/.vim/plugged')
-
 Plug 'neovim/nvim-lspconfig'
 Plug 'hrsh7th/cmp-nvim-lsp'
 Plug 'Chiel92/vim-autoformat'
@@ -22,10 +21,6 @@ Plug 'tpope/vim-surround'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'vim-test/vim-test'
-
-" Color scheme used in the GIFs!
-" Plug 'arcticicestudio/nord-vim'
-
 call plug#end()
 
 set completeopt=menuone,noinsert,noselect
@@ -111,5 +106,10 @@ let g:syntastic_check_on_wq = 0
 set statusline+=%#warningmsg#
 set statusline+=%{SyntasticStatuslineFlag()}
 set statusline+=%*
+set splitbelow
 
+set ignorecase
 set number
+set sts=4 sw=4 ts=4 expandtab
+set smartindent
+retab

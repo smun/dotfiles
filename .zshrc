@@ -34,14 +34,14 @@ ZSH=${HOME}/.oh-my-zsh
 function rust_server_inst() {
     RUSTUP_HOME=/opt/rust
     CARGO_HOME=/opt/rust
-    curl https://sh.rustup.rs -sSf | sh -s -- -y --no-modify-path
+    curl -sSf https://sh.rustup.rs | sh -s -- -y --no-modify-path
 }
 
 function rust_user_inst() {
     curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
     # TODO: a work-around for 'unstable' rust-analyzer; check for 'stable' release
     bfile=rust-analyzer
-    curl -sL https://github.com/rust-analyzer/rust-analyzer/releases/latest/download/rust-analyzer-x86_64-unknown-linux-gnu.gz | gunzip -c - > $HOME/bin/${bfile}
+    curl -sSL https://github.com/rust-analyzer/rust-analyzer/releases/latest/download/rust-analyzer-x86_64-unknown-linux-gnu.gz | gunzip -c - > $HOME/bin/${bfile}
     chmod a+x ${HOME}/bin/${bfile}
 
 }
@@ -50,7 +50,7 @@ function rust_user_inst() {
 # kubernetes
 function minikube_download() {
     mfile=${1:-"minikube-linux-amd64"}
-    curl -qLO https://storage.googleapis.com/minikube/releases/latest/${mfile}
+    curl -sSLO https://storage.googleapis.com/minikube/releases/latest/${mfile}
 }
 
 function minikube_server_inst() {
@@ -66,9 +66,9 @@ function minikube_user_inst() {
 }
 
 function kubectl_download() {
-    kctlver=$(curl -qsL https://dl.k8s.io/release/stable.txt)
-    kctlsum=$(curl -qsL https://dl.k8s.io/${kctlver}/bin/linux/amd64/kubectl.sha256)
-    curl -qLO "https://dl.k8s.io/release/${kctlver}/bin/linux/amd64/kubectl"
+    kctlver=$(curl -sSL https://dl.k8s.io/release/stable.txt)
+    kctlsum=$(curl -sSL https://dl.k8s.io/${kctlver}/bin/linux/amd64/kubectl.sha256)
+    curl -sSLO "https://dl.k8s.io/release/${kctlver}/bin/linux/amd64/kubectl"
     sha256sum -c <(echo "${kctlsum} kubectl")
 }
 
@@ -94,7 +94,7 @@ function dotfiles_update() {
 
 # linkerd2
 function linkerd2_inst() {
-    curl -fsL https://run.linkerd.io/install | sh
+    curl -fsSL https://run.linkerd.io/install | sh
     echo "Press any key to continue"
     read
     linkerd check --pre
@@ -111,7 +111,7 @@ fi
 
 # powerlevel10k
 function powerl10k_inst() {
-    git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME}/.oh-my-zsh/custom/themes/powerlevel10k
+    git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME}/themes/powerlevel10k
 }
 
 if [ ! -d ${HOME}/.oh-my-zsh/custom/themes/powerlevel10k ]; then
@@ -119,7 +119,8 @@ if [ ! -d ${HOME}/.oh-my-zsh/custom/themes/powerlevel10k ]; then
     powerl10k_inst
 fi
 
-source ~/.oh-my-zsh/custom/themes/powerlevel10k/powerlevel10k.zsh-theme
+[ -f ${ZSH}/custom/themes/powerlevel10k/powerlevel10k.zsh-theme ] && \
+    source ${ZSH}/custom/themes/powerlevel10k/powerlevel10k.zsh-theme
 
 autoload -Uz compinit
 compinit
@@ -140,7 +141,7 @@ function neovim_server_inst() {
 
 function neovim_user_inst() {
     # install plugin
-    curl -sfLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs \
+    curl -sSfLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs \
        https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim | sh 
     if [ -f ${HOME}/.config/nvim/init.vim ]; then
         nvim +PlugInstall +qall --headless 2>&1 > /dev/null # ignore the 1st run
