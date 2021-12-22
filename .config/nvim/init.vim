@@ -13,7 +13,6 @@ Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'neomake/neomake'
 Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-lua/popup.nvim'
-Plug 'nvim-telescope/telescope.nvim'
 Plug 'sbdchd/neoformat'
 Plug 'scrooloose/syntastic'
 Plug 'tpope/vim-fugitive'

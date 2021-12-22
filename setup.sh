@@ -27,21 +27,22 @@ function populate_homedir() {
 }
     
 function install() {
-    [ ! -d ${HOME}/${DOTDIR} ] && mkdir ${HOME}/${DOTDIR}
-    git clone ${DOTGITREPO} ${HOME}/${DOTDIR}
+    if [ ! -d ${HOME}/${DOTDIR} ]; then
+        mkdir ${HOME}/${DOTDIR}
+        git clone ${DOTGITREPO} ${HOME}/${DOTDIR}
+    else
+        update
+    fi
     
     cd ${HOME}
 
     populate_homedir
 
     for dfile in ${dotfiles[@]}; do
-        if [ -f ${HOME}/${dfile} ]; then
-            mv ${HOME}/${dfile} ${HOME}/${dfile}.save-${TDNOW}
-        else
+        [ -f ${HOME}/${dfile} ] && mv ${HOME}/${dfile} ${HOME}/${dfile}.save-${TDNOW}
 	    parent_dir=$(dirname ${dfile})
 	    [ ${parent_dir} != "." ] && mkdir -p ${parent_dir}
-            ln -sf ${HOME}/${DOTDIR}/${dfile} ${dfile}
-        fi
+        ln -sf ${HOME}/${DOTDIR}/${dfile} ${dfile}
     done
 }
 
