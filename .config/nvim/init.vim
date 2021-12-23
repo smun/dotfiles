@@ -8,7 +8,6 @@ Plug 'hrsh7th/cmp-path'
 Plug 'hrsh7th/cmp-vsnip'
 Plug 'hrsh7th/nvim-cmp'
 Plug 'juliosueiras/vim-terraform-completion'
-Plug 'mfussenegger/nvim-dap'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'neomake/neomake'
 Plug 'nvim-lua/plenary.nvim'
@@ -82,10 +81,14 @@ nmap <silent> t<C-g> :TestVisit<CR>
 
 set updatetime=300
 "set signcolumn=yes
+"
 " Show diagnostic popup on cursor hold
-" autocmd CursorHold * lua vim.lsp.diagnostic.show_line_diagnostics()
-autocmd CursorHold * lua vim.diagnostic.open_float()
+" neovim 0.5 or older
+autocmd CursorHold * lua vim.lsp.diagnostic.show_line_diagnostics()
+" neovim 0.6 or newer
+" autocmd CursorHold * lua vim.diagnostic.open_float()
 autocmd BufWritePre *.rs lua vim.lsp.buf.formatting_sync(nil, 200)
+
 " " Goto previous/next diagnostic warning/error
 nnoremap <silent> g[ <cmd>lua vim.lsp.diagnostic.goto_prev()<CR>
 nnoremap <silent> g] <cmd>lua vim.lsp.diagnostic.goto_next()<CR>
