@@ -153,15 +153,10 @@ function neovim_user_inst() {
     curl -sSfLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs \
        https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim | sh 
     if [ -f ${HOME}/.config/nvim/init.vim ]; then
-        # ignore the 1st run failure
-        echo "@First Run: " 
+        echo -n "@ 1st Run (ignore): " 
         nvim +'PlugInstall --sync' +qall --headless > /dev/null 2>&1 && echo " success" || echo " failed"
-        echo -n "@ Second Run: " 
+        echo -n "@ 2nd Run: " 
         nvim +'PlugInstall --sync' +qall --headless > /dev/null 2>&1 && echo " success" || echo " failed"
-        echo -n "@ Installing CoC: "
-        nvim +'CocInstall -sync coc-prettier coc-git coc-yaml coc-python coc-json coc-pyright coc-docker' \
-            +qall --headless > /dev/null 2>&1 && echo " success" || echo " failed"
-        nvim +'CocUpdateSync' +qall
     fi
 }
 
