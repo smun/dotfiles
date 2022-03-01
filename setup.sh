@@ -1,6 +1,6 @@
 #!/bin/bash
+#set -eo pipefail
 
-set -eo pipefail
 
 DOTGITREPO=https://github.com/smun/dotfiles.git
 DOTDIR=.dotfiles
