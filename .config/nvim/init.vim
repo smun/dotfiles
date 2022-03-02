@@ -83,9 +83,9 @@ set updatetime=300
 "
 " Show diagnostic popup on cursor hold
 " neovim 0.5 or older
-autocmd CursorHold * lua vim.lsp.diagnostic.show_line_diagnostics()
+" autocmd CursorHold * lua vim.lsp.diagnostic.show_line_diagnostics()
 " neovim 0.6 or newer
-" autocmd CursorHold * lua vim.diagnostic.open_float()
+autocmd CursorHold * lua vim.diagnostic.open_float()
 autocmd BufWritePre *.rs lua vim.lsp.buf.formatting_sync(nil, 200)
 
 " " Goto previous/next diagnostic warning/error

@@ -24,7 +24,7 @@ HISTSIZE=400
 UPDATE_ZSH_DAYS=14
 ENABLE_CORRECTION="true"
 
-plugins=(aliases git kubectl docker minikube cargo rust terraform ubuntu)
+plugins=(aliases git kubectl docker minikube rust terraform ubuntu)
 
 ZSH=${HOME}/.oh-my-zsh
 
