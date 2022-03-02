@@ -164,7 +164,6 @@ PATH=${LOCALBIN}:${PATH}:~/bin
 export  BROWSER=/usr/bin/google-chrome-stable
 
 alias   ls='ls --color'
-alias   vim='nvim'
 export  ARCHFLAGS="-arch x86_64"
 
 set -o vi
