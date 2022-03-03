@@ -92,7 +92,7 @@ autocmd BufWritePre *.rs lua vim.lsp.buf.formatting_sync(nil, 200)
 nnoremap <silent> g[ <cmd>lua vim.lsp.diagnostic.goto_prev()<CR>
 nnoremap <silent> g] <cmd>lua vim.lsp.diagnostic.goto_next()<CR>
 
-# Google Python Guide
+" Google Python Guide
 setlocal indentexpr=GetGooglePythonIndent(v:lnum)
 
 let s:maxoff = 50 " maximum number of lines to look backwards.
