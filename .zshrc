@@ -30,7 +30,7 @@ ZSH=${HOME}/.oh-my-zsh
 
 [ -f ${ZSH}/oh-my-zsh.sh ] && source ${ZSH}/oh-my-zsh.sh
 
-# rust
+# rust (system-wide install)
 function rust_server_inst() {
     RUSTUP_HOME=/opt/rust
     CARGO_HOME=/opt/rust
@@ -43,7 +43,7 @@ function rust_user_inst() {
     bfile=rust-analyzer
     curl -sSL https://github.com/rust-analyzer/rust-analyzer/releases/latest/download/rust-analyzer-x86_64-unknown-linux-gnu.gz | gunzip -c - > $HOME/bin/${bfile}
     chmod a+x ${HOME}/bin/${bfile}
-
+    
 }
 [ -f ${HOME}/.zshenv ] && . ${HOME}/.zshenv
     
@@ -92,7 +92,6 @@ function dotfiles_update() {
     ${HOME}/.dotfiles/dup.sh update
 }
 
-# linkerd2
 function linkerd2_inst() {
     curl -fsSL https://run.linkerd.io/install | sh
     echo "Press any key to continue"
@@ -137,13 +136,11 @@ function neovim_server_inst() {
     # add Ubuntu/Debian repo 
     sudo add-apt-repository ppa:neovim-ppa/stable 
     sudo apt-get update 
-    sudo apt-get install -y neovim python-dev python-pip python3-dev python3-pip
+    sudo apt-get install -y neovim python3-dev python3-pip
     sudo update-alternatives --install /usr/bin/vi vi /usr/bin/nvim 80
-    sudo update-alternatives --config vi
+    sudo update-alternatives --auto vi
     sudo update-alternatives --install /usr/bin/vim vim /usr/bin/nvim 80
-    audo update-alternatives --config vim
-    sudo update-alternatives --install /usr/bin/editor editor /usr/bin/nvim 80
-    sudo update-alternatives --config editor
+    sudo update-alternatives --auto vim
 
     node_server_install
 }
@@ -164,11 +161,13 @@ PATH=${LOCALBIN}:${PATH}:~/bin
 export  BROWSER=/usr/bin/google-chrome-stable
 
 alias   ls='ls --color'
-alias   vim='nvim'
 export  ARCHFLAGS="-arch x86_64"
 
 set -o vi
 bindkey "^R" history-incremental-search-backward
 
+
+
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [ ! -f ~/.p10k.zsh ] || source ~/.p10k.zsh
+export SIGNALFX_CREDENTIALS=/var/secrets/signalfx/key.json
