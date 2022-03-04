@@ -30,7 +30,7 @@ ZSH=${HOME}/.oh-my-zsh
 
 [ -f ${ZSH}/oh-my-zsh.sh ] && source ${ZSH}/oh-my-zsh.sh
 
-# rust
+# rust (system-wide install)
 function rust_server_inst() {
     RUSTUP_HOME=/opt/rust
     CARGO_HOME=/opt/rust
@@ -43,7 +43,7 @@ function rust_user_inst() {
     bfile=rust-analyzer
     curl -sSL https://github.com/rust-analyzer/rust-analyzer/releases/latest/download/rust-analyzer-x86_64-unknown-linux-gnu.gz | gunzip -c - > $HOME/bin/${bfile}
     chmod a+x ${HOME}/bin/${bfile}
-
+    
 }
 [ -f ${HOME}/.zshenv ] && . ${HOME}/.zshenv
     
@@ -165,6 +165,8 @@ export  ARCHFLAGS="-arch x86_64"
 
 set -o vi
 bindkey "^R" history-incremental-search-backward
+
+
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [ ! -f ~/.p10k.zsh ] || source ~/.p10k.zsh

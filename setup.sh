@@ -39,7 +39,7 @@ function install() {
     populate_homedir
 
     for dfile in ${dotfiles[@]}; do
-        [ -f ${HOME}/${dfile} ] && mv ${HOME}/${dfile} ${HOME}/${dfile}.save-${TDNOW}
+        [ -f ${HOME}/${dfile} ] && cp ${HOME}/${dfile} ${HOME}/${dfile}.save-${TDNOW}
 	    parent_dir=$(dirname ${dfile})
 	    [ ${parent_dir} != "." ] && mkdir -p ${parent_dir}
         ln -sf ${HOME}/${DOTDIR}/${dfile} ${dfile}
