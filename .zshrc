@@ -32,9 +32,11 @@ ZSH=${HOME}/.oh-my-zsh
 
 # rust (system-wide install)
 function rust_server_inst() {
-    RUSTUP_HOME=/opt/rust
-    CARGO_HOME=/opt/rust
+    export RUSTUP_HOME=/opt/rust
+    export CARGO_HOME=/opt/rust
+    [[ ! -d "${RUSTUP_HOME}" ]] && sudo mkdir "${RUSTUP_HOME}" && sudo chown $(whoami) "${RUSTUP_HOME}"
     curl -sSf https://sh.rustup.rs | sh -s -- -y --no-modify-path
+    echo ". ${RUSTUP_HOME}/env" >> ~/.zshenv
 }
 
 function rust_user_inst() {
@@ -89,7 +91,7 @@ function kctx() {
 }
 
 function dotfiles_update() {
-    ${HOME}/.dotfiles/dup.sh update
+    ${HOME}/.dotfiles/setup.sh update
 }
 
 function linkerd2_inst() {
