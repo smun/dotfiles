@@ -34,8 +34,13 @@ ZSH=${HOME}/.oh-my-zsh
 function rust_server_inst() {
     export RUSTUP_HOME=/opt/rust
     export CARGO_HOME=/opt/rust
-    [[ ! -d "${RUSTUP_HOME}" ]] && sudo mkdir "${RUSTUP_HOME}" && sudo chown $(whoami) "${RUSTUP_HOME}"
     curl -sSf https://sh.rustup.rs | sh -s -- -y --no-modify-path
+    if [[ ! -d "${RUSTUP_HOME}" || ! -d "${CARGO_HOME}" ]]; then
+	   echo "root required to create a system-wide Rust install directory"
+	   sudo mkdir /opt/rust
+	   sudo chown $(whoami) /opt/rust
+    fi
+    curl -sSf https://sh.rustup.rs | sh -s -- -y
     echo ". ${RUSTUP_HOME}/env" >> ~/.zshenv
 }
 
@@ -163,6 +168,7 @@ PATH=${LOCALBIN}:${PATH}:~/bin
 export  BROWSER=/usr/bin/google-chrome-stable
 
 alias   ls='ls --color'
+alias	vpn='pritunl-client-electron'
 export  ARCHFLAGS="-arch x86_64"
 
 set -o vi
