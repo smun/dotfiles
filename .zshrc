@@ -32,9 +32,16 @@ ZSH=${HOME}/.oh-my-zsh
 
 # rust (system-wide install)
 function rust_server_inst() {
-    RUSTUP_HOME=/opt/rust
-    CARGO_HOME=/opt/rust
+    export RUSTUP_HOME=/opt/rust
+    export CARGO_HOME=/opt/rust
     curl -sSf https://sh.rustup.rs | sh -s -- -y --no-modify-path
+    if [[ ! -d "${RUSTUP_HOME}" || ! -d "${CARGO_HOME}" ]]; then
+	   echo "root required to create a system-wide Rust install directory"
+	   sudo mkdir /opt/rust
+	   sudo chown $(whoami) /opt/rust
+    fi
+    curl -sSf https://sh.rustup.rs | sh -s -- -y
+    echo ". ${RUSTUP_HOME}/env" >> ~/.zshenv
 }
 
 function rust_user_inst() {
@@ -89,7 +96,7 @@ function kctx() {
 }
 
 function dotfiles_update() {
-    ${HOME}/.dotfiles/dup.sh update
+    ${HOME}/.dotfiles/setup.sh update
 }
 
 function linkerd2_inst() {
@@ -163,6 +170,7 @@ export  BROWSER=/usr/bin/google-chrome-stable
 
 alias   mk='minikube'
 alias   ls='ls --color'
+alias	vpn='pritunl-client-electron'
 export  ARCHFLAGS="-arch x86_64"
 
 set -o vi
