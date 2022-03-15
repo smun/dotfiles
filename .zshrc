@@ -24,7 +24,7 @@ HISTSIZE=400
 UPDATE_ZSH_DAYS=14
 ENABLE_CORRECTION="true"
 
-plugins=(aliases git kubectl docker minikube rust terraform ubuntu)
+plugins=(aliases git kubectl docker minikube rust terraform ubuntu vagrant)
 
 ZSH=${HOME}/.oh-my-zsh
 
@@ -157,9 +157,11 @@ function neovim_user_inst() {
     fi
 }
 
+# main
 PATH=${LOCALBIN}:${PATH}:~/bin
 export  BROWSER=/usr/bin/google-chrome-stable
 
+alias   mk='minikube'
 alias   ls='ls --color'
 export  ARCHFLAGS="-arch x86_64"
 
