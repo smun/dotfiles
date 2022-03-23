@@ -89,7 +89,7 @@ set updatetime=300
 autocmd CursorHold * lua vim.diagnostic.open_float()
 autocmd BufWritePre *.rs lua vim.lsp.buf.formatting_sync(nil, 200)
 
-" " Goto previous/next diagnostic warning/error
+" Goto previous/next diagnostic warning/error
 nnoremap <silent> g[ <cmd>lua vim.lsp.diagnostic.goto_prev()<CR>
 nnoremap <silent> g] <cmd>lua vim.lsp.diagnostic.goto_next()<CR>
 
@@ -99,16 +99,11 @@ setlocal indentexpr=GetGooglePythonIndent(v:lnum)
 let s:maxoff = 50 " maximum number of lines to look backwards.
 
 function GetGooglePythonIndent(lnum)
-
   " Indent inside parens.
   " Align with the open paren unless it is at the end of the line.
   " E.g.
-  "   open_paren_not_at_EOL(100,
-  "                         (200,
-  "                          300),
-  "                         400)
-  "   open_paren_at_EOL(
-  "       100, 200, 300, 400)
+  "   open_paren_not_at_EOL(100, (200, 300), 400)
+  "   open_paren_at_EOL( 100, 200, 300, 400)
   call cursor(a:lnum, 1)
   let [par_line, par_col] = searchpairpos('(\|{\|\[', '', ')\|}\|\]', 'bW',
         \ "line('.') < " . (a:lnum - s:maxoff) . " ? dummy :"

@@ -44,9 +44,10 @@ function install() {
 	    [ ${parent_dir} != "." ] && mkdir -p ${parent_dir}
         ln -sf ${HOME}/${DOTDIR}/${dfile} ${dfile}
     done
+
+    echo "smun dotfiles setup complete"
 }
 
-progname=$0
 subcomm=$1
 
 case ${subcomm} in
