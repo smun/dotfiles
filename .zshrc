@@ -158,9 +158,10 @@ function neovim_user_inst() {
        https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim | sh 
     if [ -f ${HOME}/.config/nvim/init.vim ]; then
         echo -n "@ 1st Run (ignore): " 
-        nvim +'PlugInstall --sync' +qall --headless > /dev/null 2>&1 && echo " success" || echo " failed"
+        nvim +'PlugInstall --sync' +qall --headless > /dev/null 2>&1 && echo " PlugInstall success" || echo " failed"
         echo -n "@ 2nd Run: " 
-        nvim +'PlugInstall --sync' +qall --headless > /dev/null 2>&1 && echo " success" || echo " failed"
+        nvim +'PlugInstall --sync' +qall --headless > /dev/null 2>&1 && echo " 2nd PlugInstall success" || echo " failed"
+        nvim +'CocInstall --sync coc-prettier coc-hhighlight coc-git coc-emmet coc-yaml coc-sh coc-rust-analyzer coc-json coc-pyright coc-groovy coc-docker coc-clangd' +qall --headless 2>&1 && echo " 2nd PlugInstall success" || echo " failed"
     fi
 }
 
@@ -176,6 +177,17 @@ export  ARCHFLAGS="-arch x86_64"
 set -o vi
 bindkey "^R" history-incremental-search-backward
 
+# openjava17
+export  JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
+export  JDK_HOME=/usr/lib/jvm/java-17-openjdk-amd64
+
+# run scripts/compilers via docker -- docker pull groovy:<tag> gcc:<tag>
+alias   groovy4='docker run --rm -v "$PWD":/home/groovy/scripts -w /home/groovy/scripts groovy:latest groovy'
+alias   groovy='docker run --rm -v "$PWD":/home/groovy/scripts -w /home/groovy/scripts groovy:alpine groovy'
+alias   groovysh='docker run -it --rm groovy:alpine'
+
+alias   g11='docker run --rm -v "$PWD":/usr/src/myapp -w /usr/src/myapp gcc:11.2.0 gcc'
+alias   g++11='docker run --rm -v "$PWD":/usr/src/myapp -w /usr/src/myapp gcc:11.2.0 g++'
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [ ! -f ~/.p10k.zsh ] || source ~/.p10k.zsh

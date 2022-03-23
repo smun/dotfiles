@@ -7,7 +7,6 @@ Plug 'hrsh7th/cmp-buffer'
 Plug 'hrsh7th/cmp-path'
 Plug 'hrsh7th/cmp-vsnip'
 Plug 'hrsh7th/nvim-cmp'
-Plug 'juliosueiras/vim-terraform-completion'
 Plug 'neomake/neomake'
 Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-lua/popup.nvim'
@@ -82,6 +81,8 @@ nmap <silent> t<C-g> :TestVisit<CR>
 set updatetime=300
 "set signcolumn=yes
 "
+au BufNewFile,BufRead Jenkinsfile setf groovy
+
 " Show diagnostic popup on cursor hold
 " neovim 0.5 or older
 " autocmd CursorHold * lua vim.lsp.diagnostic.show_line_diagnostics()
@@ -124,10 +125,9 @@ endfunction
 let pyindent_nested_paren="&sw*2"
 let pyindent_open_paren="&sw*2"
 
-
 let g:loaded_python_provider = 0
 let g:loaded_perl_provider = 0
-let g:python3_host_prog = 'python3'
+let g:python3_host_prog = '/usr/bin/python3'
 let g:neomake_python_enabled_makers = ['flake8']
 let g:test#strategy = "neovim"
 let g:test#preserve_screen = 1
@@ -136,11 +136,13 @@ let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
+let g:loaded_ruby_provider = 0
 
 set statusline+=%#warningmsg#
 set statusline+=%{SyntasticStatuslineFlag()}
 set statusline+=%*
 set splitbelow
+set termguicolors
 
 set ignorecase
 set number
