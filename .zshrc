@@ -161,7 +161,8 @@ function neovim_user_inst() {
         nvim +'PlugInstall --sync' +qall --headless > /dev/null 2>&1 && echo " PlugInstall success" || echo " failed"
         echo -n "@ 2nd Run: " 
         nvim +'PlugInstall --sync' +qall --headless > /dev/null 2>&1 && echo " 2nd PlugInstall success" || echo " failed"
-        nvim +'CocInstall --sync coc-prettier coc-hhighlight coc-git coc-emmet coc-yaml coc-sh coc-rust-analyzer coc-json coc-pyright coc-groovy coc-docker coc-clangd' +qall --headless 2>&1 && echo " 2nd PlugInstall success" || echo " failed"
+	echo -n "@ CocInstall: "
+        nvim +'CocInstall --sync coc-prettier coc-hhighlight coc-git coc-emmet coc-yaml coc-sh coc-rust-analyzer coc-json coc-pyright coc-groovy coc-docker coc-clangd' --headless 2>&1 && echo " 2nd PlugInstall success" || echo " failed"
     fi
 }
 
