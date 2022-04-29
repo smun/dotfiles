@@ -10,8 +10,9 @@ LOCALBIN="${LOCAL}/bin"
 
 # Path to your oh-my-zsh installation.
 function ohmyzsh_user_inst() {
-    curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh | \
-	    sh -s -- --unattended --keep-zshrc
+    curl -fsSL \
+        https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh \
+        | sh -s -- --unattended --keep-zshrc
 }
 
 if [ ! -d ${HOME}/.oh-my-zsh ]; then
@@ -24,7 +25,8 @@ HISTSIZE=400
 UPDATE_ZSH_DAYS=14
 ENABLE_CORRECTION="true"
 
-plugins=(aliases git kubectl docker minikube rust terraform ubuntu vagrant)
+plugins=(aliases git kubectl docker minikube rust terraform 
+         ubuntu vagrant)
 
 ZSH=${HOME}/.oh-my-zsh
 
@@ -47,11 +49,13 @@ function rust_server_inst() {
 function rust_user_inst() {
     curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
     # TODO: a work-around for 'unstable' rust-analyzer; check for 'stable' release
+    sfile="rust-analyzer-x86_64-unknown-linux-gnu.gz"
     bfile=rust-analyzer
-    curl -sSL https://github.com/rust-analyzer/rust-analyzer/releases/latest/download/rust-analyzer-x86_64-unknown-linux-gnu.gz | gunzip -c - > $HOME/bin/${bfile}
+    curl -sSL https://github.com/rust-analyzer/rust-analyzer/releases/latest/download/${sfile} \
+        | gunzip -c - > $HOME/bin/${bfile}
     chmod a+x ${HOME}/bin/${bfile}
-    
 }
+
 [ -f ${HOME}/.zshenv ] && . ${HOME}/.zshenv
     
 # kubernetes
@@ -75,7 +79,8 @@ function minikube_user_inst() {
 function kubectl_download() {
     kctlver=$(curl -sSL https://dl.k8s.io/release/stable.txt)
     kctlsum=$(curl -sSL https://dl.k8s.io/${kctlver}/bin/linux/amd64/kubectl.sha256)
-    curl -sSLO "https://dl.k8s.io/release/${kctlver}/bin/linux/amd64/kubectl"
+    curl -sSLO \
+        "https://dl.k8s.io/release/${kctlver}/bin/linux/amd64/kubectl"
     sha256sum -c <(echo "${kctlsum} kubectl")
 }
 
@@ -117,7 +122,8 @@ fi
 
 # powerlevel10k
 function powerl10k_inst() {
-    git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME}/themes/powerlevel10k
+    git clone --depth=1 https://github.com/romkatv/powerlevel10k.git \
+        ${ZSH_CUSTOM:-$HOME}/themes/powerlevel10k
 }
 
 if [ ! -d ${HOME}/.oh-my-zsh/custom/themes/powerlevel10k ]; then
@@ -158,11 +164,16 @@ function neovim_user_inst() {
        https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim | sh 
     if [ -f ${HOME}/.config/nvim/init.vim ]; then
         echo -n "@ 1st Run (ignore): " 
-        nvim +'PlugInstall --sync' +qall --headless > /dev/null 2>&1 && echo " PlugInstall success" || echo " failed"
+        nvim +'PlugInstall --sync' +qall --headless > /dev/null 2>&1 && \
+            echo " PlugInstall success" || echo " failed"
         echo -n "@ 2nd Run: " 
-        nvim +'PlugInstall --sync' +qall --headless > /dev/null 2>&1 && echo " 2nd PlugInstall success" || echo " failed"
-	echo -n "@ CocInstall: "
-        nvim +'CocInstall --sync coc-prettier coc-hhighlight coc-git coc-emmet coc-yaml coc-sh coc-rust-analyzer coc-json coc-pyright coc-groovy coc-docker coc-clangd' --headless 2>&1 && echo " 2nd PlugInstall success" || echo " failed"
+        nvim +'PlugInstall --sync' +qall --headless > /dev/null 2>&1 && \
+            echo " 2nd PlugInstall success" || echo " failed"
+	    echo -n "@ CocInstall: "
+        nvim +'CocInstall --sync coc-prettier coc-hhighlight coc-git \
+            coc-emmet coc-yaml coc-sh coc-rust-analyzer coc-json coc-pyright \
+            coc-groovy coc-docker coc-clangd' --headless 2>&1 && \
+            echo " 2nd PlugInstall success" || echo " failed"
     fi
 }
 
