@@ -58,43 +58,6 @@ function rust_user_inst() {
 
 [ -f ${HOME}/.zshenv ] && . ${HOME}/.zshenv
     
-# kubernetes
-function minikube_download() {
-    mfile=${1:-"minikube-linux-amd64"}
-    curl -sSLO https://storage.googleapis.com/minikube/releases/latest/${mfile}
-}
-
-function minikube_server_inst() {
-    bfile="minikube_latest_amd64.deb"
-    minikube_download ${bfile}
-    sudo dpkg -i minikube_latest_amd64.deb && rm ${bfile}
-}
-
-function minikube_user_inst() {
-    bfile="minikube-linux-amd64"
-    minikube_download ${bfile}
-    sudo install ${bfile} /usr/local/bin/minikube && rm ${bfile}
-}
-
-function kubectl_download() {
-    kctlver=$(curl -sSL https://dl.k8s.io/release/stable.txt)
-    kctlsum=$(curl -sSL https://dl.k8s.io/${kctlver}/bin/linux/amd64/kubectl.sha256)
-    curl -sSLO \
-        "https://dl.k8s.io/release/${kctlver}/bin/linux/amd64/kubectl"
-    sha256sum -c <(echo "${kctlsum} kubectl")
-}
-
-function kubectl_server_inst() {
-    kubectl_download
-    sudo install -o root -g root -m 0755 kubectl ${LOCALBIN}/
-}
-
-function kubectl_user_inst() {
-    kubectl_download
-    [ ! -d ${HOME}/bin ] && mkdir ${HOME}/bin
-    mv kubectl ${HOME}/bin
-}
-
 function kctx() {
     local namesp=${1:-"default"}
     kubectl config set-context --current --namespace=${namesp}
@@ -146,16 +109,11 @@ function node_server_install() {
 
 # neovim 
 function neovim_server_inst() {
-    # add Ubuntu/Debian repo 
     sudo add-apt-repository ppa:neovim-ppa/stable 
     sudo apt-get update 
     sudo apt-get install -y neovim python3-dev python3-pip
-    sudo update-alternatives --install /usr/bin/vi vi /usr/bin/nvim 80
-    sudo update-alternatives --auto vi
     sudo update-alternatives --install /usr/bin/vim vim /usr/bin/nvim 80
     sudo update-alternatives --auto vim
-
-    node_server_install
 }
 
 function neovim_user_inst() {
@@ -170,10 +128,10 @@ function neovim_user_inst() {
         nvim +'PlugInstall --sync' +qall --headless > /dev/null 2>&1 && \
             echo " 2nd PlugInstall success" || echo " failed"
     	echo -n "@ CocInstall: "
-        nvim +'CocInstall --sync coc-prettier coc-hhighlight coc-git \
+        nvim +'CocInstall -sync coc-prettier coc-highlight coc-git coc-go \
             coc-emmet coc-yaml coc-sh coc-rust-analyzer coc-json coc-pyright \
-            coc-groovy coc-docker coc-clangd' --headless 2>&1 && \
-            echo " 2nd PlugInstall success" || echo " failed"
+            coc-groovy coc-docker coc-clangd|qa' --headless 2>&1 && \
+            echo " Coc extensions success" || echo " faile"
     fi
 }
 
@@ -203,4 +161,7 @@ alias   g++11='docker run --rm -v "$PWD":/usr/src/myapp -w /usr/src/myapp gcc:11
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [ ! -f ~/.p10k.zsh ] || source ~/.p10k.zsh
-export SIGNALFX_CREDENTIALS=/var/secrets/signalfx/key.json
+
+alias jenkins-hub="gcloud beta compute ssh --zone \"us-west1-a\" \"jenkins-hub\" --tunnel-through-iap --project \"jenkins-nuro\""
+alias jenkins-hub-test="gcloud compute ssh jenkins-hub-test --zone us-west1-c --project jenkins-nuro"
+alias jenkins-hub-stg="gcloud beta compute ssh --zone \"us-west1-a\" \"jenkins-hub-stg\"  --tunnel-through-iap --project \"jenkins-nuro\""
