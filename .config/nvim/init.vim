@@ -122,6 +122,8 @@ function GetGooglePythonIndent(lnum)
 
 endfunction
 
+highlight link CocErrorSign GruvboxRed
+
 let pyindent_nested_paren="&sw*2"
 let pyindent_open_paren="&sw*2"
 
