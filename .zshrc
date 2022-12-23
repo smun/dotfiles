@@ -38,9 +38,9 @@ function rust_server_inst() {
     export CARGO_HOME=/opt/rust
     curl -sSf https://sh.rustup.rs | sh -s -- -y --no-modify-path
     if [[ ! -d "${RUSTUP_HOME}" || ! -d "${CARGO_HOME}" ]]; then
-	   echo "root required to create a system-wide Rust install directory"
-	   sudo mkdir /opt/rust
-	   sudo chown $(whoami) /opt/rust
+       echo "root required to create a system-wide Rust install directory"
+       sudo mkdir /opt/rust
+       sudo chown $(whoami) /opt/rust
     fi
     curl -sSf https://sh.rustup.rs | sh -s -- -y
     echo ". ${RUSTUP_HOME}/env" >> ~/.zshenv
@@ -102,7 +102,7 @@ compinit
 
 # node (required by neovim)    
 function node_server_install() {    
-    curl -fsSL https://deb.nodesource.com/setup_16.x | sudo -E bash -    
+    curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash -    
     sudo apt-get install -y nodejs    
 }    
 
@@ -110,10 +110,7 @@ function node_server_install() {
 # neovim 
 function neovim_server_inst() {
     sudo add-apt-repository ppa:neovim-ppa/stable 
-    sudo apt-get update 
     sudo apt-get install -y neovim python3-dev python3-pip
-    sudo update-alternatives --install /usr/bin/vim vim /usr/bin/nvim 80
-    sudo update-alternatives --auto vim
 }
 
 function neovim_user_inst() {
@@ -127,12 +124,26 @@ function neovim_user_inst() {
         echo -n "@ 2nd Run: " 
         nvim +'PlugInstall --sync' +qall --headless > /dev/null 2>&1 && \
             echo " 2nd PlugInstall success" || echo " failed"
-    	echo -n "@ CocInstall: "
+        echo -n "@ CocInstall: "
         nvim +'CocInstall -sync coc-prettier coc-highlight coc-git coc-go \
             coc-emmet coc-yaml coc-sh coc-rust-analyzer coc-json coc-pyright \
             coc-groovy coc-docker coc-clangd|qa' --headless 2>&1 && \
             echo " Coc extensions success" || echo " faile"
     fi
+}
+
+function fixfiles() {
+    for i in *.pdf *.epub; do
+        ext=${i##*.}
+        #n=$(echo "${i%.*}" | sed -e 's; by .*$;;g' -e 's; (z-lib.org);;g' -e 's;[\.|_]; ;g')
+        n=$(echo "${i%.*}" | sed -e 's; by .*$;;g' -e 's; (.*);;g' -e 's;[\.|_]; ;g')
+        nf="${n}.${ext}" 
+        if [ $nf != $i ]; then
+            echo "*old: " $i
+            echo " new: " $nf
+            mv $i $nf
+        fi
+    done
 }
 
 # main
@@ -141,23 +152,13 @@ export  BROWSER=/usr/bin/google-chrome-stable
 
 alias   mk='minikube'
 alias   ls='ls --color'
-alias	vpn='pritunl-client-electron'
-export  ARCHFLAGS="-arch x86_64"
 
 set -o vi
 bindkey "^R" history-incremental-search-backward
 
 # openjava17
-export  JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
-export  JDK_HOME=/usr/lib/jvm/java-17-openjdk-amd64
-
-# run scripts/compilers via docker -- docker pull groovy:<tag> gcc:<tag>
-alias   groovy4='docker run --rm -v "$PWD":/home/groovy/scripts -w /home/groovy/scripts groovy:latest groovy'
-alias   groovy='docker run --rm -v "$PWD":/home/groovy/scripts -w /home/groovy/scripts groovy:alpine groovy'
-alias   groovysh='docker run -it --rm groovy:alpine'
-
-alias   g11='docker run --rm -v "$PWD":/usr/src/myapp -w /usr/src/myapp gcc:11.2.0 gcc'
-alias   g++11='docker run --rm -v "$PWD":/usr/src/myapp -w /usr/src/myapp gcc:11.2.0 g++'
+export  JAVA_HOME=/usr/lib/jvm/java-19-openjdk-amd64
+export  JDK_HOME=/usr/lib/jvm/java-19-openjdk-amd64
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [ ! -f ~/.p10k.zsh ] || source ~/.p10k.zsh

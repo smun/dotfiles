@@ -7,7 +7,7 @@ DOTDIR=.dotfiles
 TDNOW=$(date +%s)
 
 # add files here:
-dotfiles=(".zshrc" ".p10k.zsh" ".config/nvim/init.vim")
+dotfiles=(".zshrc" ".p10k.zsh" ".config/nvim/init.vim" ".tmux.conf")
 homedirs=("bin" "lib" ".ssh" ".config" ".local")
 
 function help() {
