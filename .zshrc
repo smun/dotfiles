@@ -135,7 +135,6 @@ function neovim_user_inst() {
 function fixfiles() {
     for i in *.pdf *.epub; do
         ext=${i##*.}
-        #n=$(echo "${i%.*}" | sed -e 's; by .*$;;g' -e 's; (z-lib.org);;g' -e 's;[\.|_]; ;g')
         n=$(echo "${i%.*}" | sed -e 's; by .*$;;g' -e 's; (.*);;g' -e 's;[\.|_]; ;g')
         nf="${n}.${ext}" 
         if [ $nf != $i ]; then
@@ -162,7 +161,3 @@ export  JDK_HOME=/usr/lib/jvm/java-19-openjdk-amd64
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [ ! -f ~/.p10k.zsh ] || source ~/.p10k.zsh
-
-alias jenkins-hub="gcloud beta compute ssh --zone \"us-west1-a\" \"jenkins-hub\" --tunnel-through-iap --project \"jenkins-nuro\""
-alias jenkins-hub-test="gcloud compute ssh jenkins-hub-test --zone us-west1-c --project jenkins-nuro"
-alias jenkins-hub-stg="gcloud beta compute ssh --zone \"us-west1-a\" \"jenkins-hub-stg\"  --tunnel-through-iap --project \"jenkins-nuro\""
