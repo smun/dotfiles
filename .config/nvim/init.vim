@@ -15,7 +15,25 @@ Plug 'sbdchd/neoformat'
 Plug 'scrooloose/syntastic'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-surround'
+"Plug 'fatih/vim-go'
+"" react 
 Plug 'vim-test/vim-test'
+Plug 'pangloss/vim-javascript'
+Plug 'leafgarland/typescript-vim'
+Plug 'peitalin/vim-jsx-typescript'
+Plug 'styled-components/vim-styled-components', { 'branch': 'main' }
+Plug 'jparise/vim-graphql'
+
+"rust cargo
+Plug 'nvim-lua/plenary.nvim'
+Plug 'saecki/crates.nvim', { 'tag': 'stable' }
+
+
+Plug 'mfussenegger/nvim-dap'
+Plug 'mfussenegger/nvim-dap-python'
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+Plug 'junegunn/fzf.vim'
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 call plug#end()
 
@@ -59,6 +77,8 @@ cmp.setup({
     { name = 'buffer' },
   },
 })
+
+require('crates').setup()
 
 -- See: https://github.com/neovim/nvim-lspconfig/tree/54eb2a070a4f389b1be0f98070f81d23e2b1a715#suggested-configuration
 local opts = { noremap=true, silent=true }
@@ -190,6 +210,16 @@ let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
 let g:loaded_ruby_provider = 0
 let g:coc_disable_transparent_cursor = 1
+let g:coc_global_extensions = [ 'coc-tsserver' ]
+
+" react/javascript
+if isdirectory('./node_modules') && isdirectory('./node_modules/prettier')
+  let g:coc_global_extensions += ['coc-prettier']
+endif
+
+if isdirectory('./node_modules') && isdirectory('./node_modules/eslint')
+  let g:coc_global_extensions += ['coc-eslint']
+endif
 
 set statusline+=%#warningmsg#
 set statusline+=%{SyntasticStatuslineFlag()}

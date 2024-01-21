@@ -24,6 +24,7 @@ ZSH_THEME="robbyrussell"
 HISTSIZE=400
 UPDATE_ZSH_DAYS=14
 ENABLE_CORRECTION="true"
+LANGUAGE=en_US:en
 
 plugins=(aliases git kubectl docker minikube rust terraform 
          ubuntu vagrant)
@@ -71,6 +72,8 @@ function linkerd2_inst() {
     curl -fsSL https://run.linkerd.io/install | sh
     echo "Press any key to continue"
     read
+    ln -s ~/.linkerd2/bin/linkerd ~/bin/
+    rehash
     linkerd check --pre
     read
     linkerd install | kubectl apply -f -
@@ -102,14 +105,14 @@ compinit
 
 # node (required by neovim)    
 function node_server_install() {    
-    curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash -    
+    curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -    
     sudo apt-get install -y nodejs    
 }    
 
 
 # neovim 
 function neovim_server_inst() {
-    sudo add-apt-repository ppa:neovim-ppa/stable 
+    sudo add-apt-repository ppa:neovim-ppa/unstable 
     sudo apt-get install -y neovim python3-dev python3-pip
 }
 
@@ -155,9 +158,18 @@ alias   ls='ls --color'
 set -o vi
 bindkey "^R" history-incremental-search-backward
 
+EDITOR=vim
+
 # openjava17
-export  JAVA_HOME=/usr/lib/jvm/java-19-openjdk-amd64
-export  JDK_HOME=/usr/lib/jvm/java-19-openjdk-amd64
+export  JAVA_HOME=/usr/lib/jvm/java-20-openjdk-amd64
+export  JDK_HOME=/usr/lib/jvm/java-20-openjdk-amd64
+
+export PYENV_ROOT="$HOME/.pyenv"
+command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
+eval "$(pyenv init -)"
+
+# experimental stuff
+PATH=$PATH:~/.codon/bin:~/.local/bin
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [ ! -f ~/.p10k.zsh ] || source ~/.p10k.zsh
